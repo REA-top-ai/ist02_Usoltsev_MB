@@ -1,0 +1,6 @@
+def create_spreadsheet(title, row_count=1000):
+    print("Создвние электронной таблицы с именем " + title + " with " + str(row_count) + " lines")
+
+
+create_spreadsheet("Загрузки")
+create_spreadsheet("Приложения", 10)
