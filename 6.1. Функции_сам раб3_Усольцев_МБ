@@ -1,0 +1,36 @@
+clothes = "Домашняя одежда"
+
+print("У меня большой гардероб")
+print("Утром лучше всего подходит " + clothes)
+print("Днём лучше всего подходит " + clothes)
+print("Вечером лучше всего подходит " + clothes)
+print("Ночью лучше всего подходит " + clothes)
+
+meal = "Пиво и чипсы"
+
+print("Мои предпочтения в еде")
+print("На завтрак я предпочитаю " + meal)
+print("На обед я предпочитаю " + meal)
+print("На ужин я предпочитаю " + meal)
+
+
+def preferences_of_clothes(cloth):
+    print("У меня большой гардероб")
+    print(f"Утром лучше всего подходит {cloth}")
+    print(f"Днём лучше всего подходит {cloth}")
+    print(f"Вечером лучше всего подходит {cloth}")
+    print(f"Ночью лучше всего подходит {cloth}")
+
+
+def preferences_of_meals(meal):
+    print("Мои предпочтения в еде")
+    print(f"На завтрак я предпочитаю {meal}")
+    print(f"На обед я предпочитаю {meal}")
+    print(f"На ужин я предпочитаю {meal}")
+
+
+preferences_of_clothes(clothes)
+preferences_of_meals(meal)
+
+
+
