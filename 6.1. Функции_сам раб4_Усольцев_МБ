@@ -1,0 +1,49 @@
+user_name = ""
+Dmitriy_check = "Дмитрий, твое рабочее место находится в другой комнате. Отойди от чужого компьютера и займись работой!"
+greeting = "Добро пожаловать!"
+
+# Тест для имени Дмитрий
+user_name = "Дмитрий"
+if user_name == "Дмитрий":
+    print(Dmitriy_check)
+else:
+    print(greeting)
+
+# Тест для имени Ангелина
+user_name = "Ангелина"
+if user_name == "Дмитрий":
+    print(Dmitriy_check)
+else:
+    print(greeting)
+
+
+ARM = 0
+
+if user_name == "Дмитрий" and ARM == 1:
+    print(greeting)
+elif user_name == "Ангелина" and ARM == 2:
+    print(greeting)
+elif user_name == "Василий" and ARM == 3:
+    print(greeting)
+elif user_name == "Екатерина" and ARM == 4:
+    print(greeting)
+elif user_name == "" and ARM != 1:
+    print(Dmitriy_check)
+else:
+    print("Логин или пароль не верный, попробуйте ещё раз")
+
+
+# Использование функций
+def check_access_complete(user_name, ARM):
+    if user_name == "Дмитрий" and ARM == 1:
+        print("Добро пожаловать!")
+    elif user_name == "Ангелина" and ARM == 2:
+        print("Добро пожаловать!")
+    elif user_name == "Василий" and ARM == 3:
+        print("Добро пожаловать!")
+    elif user_name == "Екатерина" and ARM == 4:
+        print("Добро пожаловать!")
+    elif user_name == "Дмитрий" and ARM != 1:
+        print("Дмитрий, твое рабочее место находится в другой комнате. Отойди от чужого компьютера и займись работой!")
+    else:
+        print("Логин или пароль не верный, попробуйте еще раз")
