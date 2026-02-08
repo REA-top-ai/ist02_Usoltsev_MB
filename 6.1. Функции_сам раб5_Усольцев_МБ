@@ -1,0 +1,33 @@
+mark = 4.6
+
+"""
+if mark >= 4.0:
+    grade = "A"
+elif mark >= 3.0:
+    grade = "B"
+elif mark >= 2.0:
+    grade = "C"
+elif mark >= 1.0:
+    grade = "D"
+elif mark >= 0.0:
+    grade = "F"
+
+print(grade)
+"""
+
+
+def mark_to_grade(mark):
+    if mark >= 4.0:
+        return "A"
+    elif mark >= 3.0:
+        return "B"
+    elif mark >= 2.0:
+        return "C"
+    elif mark >= 1.0:
+        return "D"
+    elif mark >= 0.0:
+        return "F"
+
+
+grade = mark_to_grade(mark)
+print(grade)
