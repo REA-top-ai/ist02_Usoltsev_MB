@@ -1,0 +1,2 @@
+fawour_word = "Сон"
+print(fawour_word)
