@@ -1,2 +1,3 @@
-fawour_word = "Сон"
-print(fawour_word)
+# Задание: Сохранить любимое слово в переменную и вывести его
+favour_word = "Сон"
+print(favour_word)
