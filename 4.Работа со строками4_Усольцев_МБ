@@ -1,12 +1,9 @@
-def account_generator(first_name, last_name):
-    length_first_name = len(first_name)
-    length_last_name = len(last_name)
-
-    new_account = first_name[length_first_name-3:] + last_name[length_last_name-3:]
-    return new_account
+def password_generator(first_name, last_name):
+    """Возвращает объединение последних трех букв имени и фамилии."""
+    # Используем отрицательные индексы для получения последних трех символов
+    return first_name[-3:] + last_name[-3:]
 
 
 first_name = "Виталий"
 last_name = "Красилов"
-
-new_account = account_generator(first_name, last_name)
+temp_password = password_generator(first_name, last_name)
