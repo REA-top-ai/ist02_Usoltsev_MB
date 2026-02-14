@@ -1,0 +1,1 @@
+num_cameras = {"backyard": 6, "garage": 2, "driveway": 1}
