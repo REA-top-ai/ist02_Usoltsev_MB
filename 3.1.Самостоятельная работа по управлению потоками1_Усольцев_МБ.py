@@ -33,8 +33,12 @@ elif random_number == 11:
 else:
     answer = 'Ошибка'
     
-if name is empty:
-    
-    
-print(f'{name} спрашивает: {question}')
-print(f'Магический шар отвечает: {answer}')
+if name and question:
+    print(f'{name} спрашивает: {question}')
+    print(f'Магический шар отвечает: {answer}')
+elif not name and answer:
+    print(f'Вопрос: {question}')
+    print(f'Магический шар отвечает: {answer}')
+else:
+    print('Magic 8-Ball не может принести удачу, иначе ткань реальности окажется под угрозой!')
+
