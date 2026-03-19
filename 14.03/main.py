@@ -2,7 +2,9 @@ from modules.api_methods import get_everything
 import requests as r
 import pprint
 import json
-apiKey = '143d957cfd68407abf16ca96845956e0'
+
+
+apiKey = 'c63bf198cdcf4034806c57f1f18ce0df'
 url = 'https://newsapi.org/v2/everything'
 
 data = get_everything(apiKey, q='news', sortBy='publishedAt', language='ru')
