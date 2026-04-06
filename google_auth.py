@@ -1,7 +1,11 @@
 from google_auth_oauthlib.flow import InstalledAppFlow
+from dotenv import load_dotenv
+import os
 
-CLIENT_ID = '219775451235-31dbamg4vltmnujskqj1va7d2gqvdq2f.apps.googleusercontent.com'
-CLIENT_SECRET = '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'
+load_dotenv()
+
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
 flow = InstalledAppFlow.from_client_config({
     "installed": {
