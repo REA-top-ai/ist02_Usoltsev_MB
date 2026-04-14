@@ -1,29 +1,21 @@
-from modules.api_methods import get_everything
-import requests as r
-import pprint
-import json
+from api_proxy import (
+    get_top_headlines,
+    get_everything,
+    get_sources
+)
+from pprint import pprint
 
+if __name__ == '__main__':
+    API_KEY = 'c63bf198cdcf4034806c57f1f18ce0df'
 
-apiKey = 'c63bf198cdcf4034806c57f1f18ce0df'
-url = 'https://newsapi.org/v2/everything'
+    print("Top headlines 'apple':")
+    headlines = get_top_headlines(api_key=API_KEY, q='apple')
+    pprint(headlines)
 
-data = get_everything(apiKey, q='news', sortBy='publishedAt', language='ru')
+    print("\narticles 'bitcoin':")
+    everything = get_everything(api_key=API_KEY, q='bitcoin', page_size=3)
+    pprint(everything)
 
-filtered_data = []
-
-for article in data['articles']:
-    artdict = {}
-    title = article['title']
-    artdict['title'] = title
-    urllink = article['url']
-    artdict['url'] = urllink
-    description = article['description']
-    artdict['description']= description
-    artdict['date'] = article['publishedAt']
-    
-    if (title != '[removed]') and (urllink is not None) and (len(description) >= 50):
-        filtered_data.append(artdict)
-    if len(filtered_data) == 50:
-        break
-
-print(filtered_data)
+    print("\nNews sources:")
+    sources = get_sources(api_key=API_KEY, category='business', language='en')
+    pprint(sources)
