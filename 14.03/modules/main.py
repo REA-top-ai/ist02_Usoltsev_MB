@@ -1,4 +1,4 @@
-from api_proxy import (
+from api_methods import (
     get_top_headlines,
     get_everything,
     get_sources

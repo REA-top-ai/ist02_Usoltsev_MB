@@ -1,7 +1,7 @@
 import requests
 import datetime
-from api_proxy import get_everything
-from dotenv import dotenv_load
+from api_methods import get_everything
+from dotenv import load_dotenv
 import os
 
 
