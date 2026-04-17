@@ -1,14 +1,22 @@
-import requests as r
-from requests.auth import HTTPDigestAuth
+from google_auth_oauthlib.flow import InstalledAppFlow
+from dotenv import load_dotenv
+import os
 
-BASE_URL = "https://httpbin.org"
-TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30'
+load_dotenv()
 
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
-def main():
-    ba = r.get(f'{BASE_URL}/basic-auth/user/passwd', auth=('user', 'pass'))
-    br = r.get(f'{BASE_URL}/bearer', headers={'Authorization': f'Bearer {TOKEN}'})
-    da = r.get(f'{BASE_URL}/digest-auth/auth/user/passwd',auth=HTTPDigestAuth('user', 'pass'))
+flow = InstalledAppFlow.from_client_config({
+    "installed": {
+        "client_id": CLIENT_ID,
+        "client_secret": CLIENT_SECRET,
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "redirect_uris": ["http://localhost:8080/"]
+    }
+}, scopes=["openid", "email", "profile"])
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    creds = flow.run_local_server(port=8080)
+    print("Token:", creds.token)
