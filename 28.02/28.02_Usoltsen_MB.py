@@ -9,13 +9,14 @@ logs = [
     "2025-02-01 10:30:12|ERROR|user=tom action=login status=fail ip=10.0.0.5"
 ]
 
+#функция main
 
 def logToDict (log: str) -> dict:
     parts = log.split('|')
 
     data = parts[0]
     level = parts[1]
-    message = parts[2]
+    message = parts[2] #проверить бы длину списка, чтобы избежать out of range
 
     fields = message.split(" ")
 
