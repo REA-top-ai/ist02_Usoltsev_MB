@@ -1,4 +1,3 @@
-def main():
+def get_username():
     username = input('Введите логин GitHub: ').strip()
-if __name__ == '__main__':
-    main()
+    return username
