@@ -41,4 +41,5 @@ with Mistral(api_key=mistral_api_key) as mistral:
         }
     ], stream=False)
 
-    print(res)
+    answer_text = res.choices[0].message.content
+    print(answer_text)

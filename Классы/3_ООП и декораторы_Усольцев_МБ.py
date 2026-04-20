@@ -20,59 +20,15 @@ def log_action(func):
     return wrapper
 
 
-class Hero:
-    def __init__(self, name, hero_class):
-        self.name = name
-        self.health = 60 if hero_class == 'волшебник' else 100
-        self.mana = 50 if hero_class == 'волшебник' else 10
-        self.hero_class = hero_class
-        self.spell_names = {}
-        self.items = {}
-
-    @is_alive
-    def attack(self, damage):
-        print(f'Герой нанес урон: {damage}')
-
-    @log_action
-    def heal(self, amount):
-        self.health += amount
-        # print(f'Герой восстановил здоровье: {self.health}')
-
-    @is_alive
-    def cast_spell(self, spell_name):
+def mana_check(func):
+    """Проверяем достаточно ли маны для заклинания"""
+    def wrapper(self, spell_name):
         cost = self.spell_names.get(spell_name).get('mana_cost')
-        self.mana -= cost
-        print(f'Герой использовал заклинание: {spell_name}')
-
-    def add_spell(self, spell_name, mana_cost, attack_damage=None, health_increase=None):
-        self.spell_names[spell_name] = {'mana_cost': mana_cost, 'attack_damage': attack_damage, 'health_increase': health_increase}
-
-    def add_item(self, item, parametr, bonus):
-        if len(self.items) >= 6:
-            print('Нельзя надеть больше 6 предметов')
+        if self.mana < cost:
+            print(f'У вас недостаточно маны, чтобы использовать заклинание: {spell_name}')
             return
-        self.items[item] = {parametr, bonus}
-        if parametr == "health":
-            self.health += bonus
-        elif parametr == "mana":
-            self.mana += bonus
-        else:
-            print('Данный предмет не может быть экипирован')
-            return
-
-    def delete_item(self, item):
-        if item in self.items:
-            parametr = self.items[item]['parametr']
-            bonus = self.items[item]['bonus']
-            del self.items[item]
-
-            if parametr == "health":
-                self.health -= bonus
-            elif parametr == "mana":
-                self.mana -= bonus
-        else:
-            print('Предмет не экипирован')
-            return
+        return func(self, spell_name)
+    return wrapper
 
 
 def easter_event(end_date: datetime):
@@ -111,7 +67,6 @@ def easter_event(end_date: datetime):
         @health.setter
         def health(self, value):
             if self._event_active():
-                # Лечение/урон применяются к базовому здоровью, делённому на 2
                 self._base_health = value / 2
             else:
                 self._base_health = value
@@ -121,11 +76,11 @@ def easter_event(end_date: datetime):
         # Свойство mana
         @property
         def mana(self):
-            if not self._event_active() and "Священный посох" in self.items:
-                self.delate_item("Священный посох")
             if self._event_active():
                 base = self._base_mana * 1.5
                 return int(base)
+            if not self._event_active() and "Священный посох" in self.items:
+                self.delete_item("Священный посох")
             return self._base_mana
 
         @mana.setter
@@ -142,6 +97,62 @@ def easter_event(end_date: datetime):
         cls.mana = mana
         return cls
     return decorator
+
+
+class Hero:
+    def __init__(self, name, hero_class):
+        self.name = name
+        self.health = 60 if hero_class == 'волшебник' else 100
+        self.mana = 50 if hero_class == 'волшебник' else 10
+        self.hero_class = hero_class
+        self.spell_names = {}
+        self.items = {}
+
+    @is_alive
+    def attack(self, damage):
+        print(f'Герой нанес урон: {damage}')
+
+    @log_action
+    def heal(self, amount):
+        self.health += amount
+        # print(f'Герой восстановил здоровье: {self.health}')
+
+    @mana_check
+    @is_alive
+    def cast_spell(self, spell_name):
+        cost = self.spell_names.get(spell_name).get('mana_cost')
+        self.mana -= cost
+        print(f'Герой использовал заклинание: {spell_name}')
+
+    def add_spell(self, spell_name, mana_cost, attack_damage=None, health_increase=None):
+        self.spell_names[spell_name] = {'mana_cost': mana_cost, 'attack_damage': attack_damage, 'health_increase': health_increase}
+
+    def add_item(self, item, parametr, bonus):
+        if len(self.items) >= 6:
+            print('Нельзя надеть больше 6 предметов')
+            return
+        self.items[item] = {'parametr': parametr, 'bonus': bonus}
+        if parametr == "health":
+            self.health += bonus
+        elif parametr == "mana":
+            self.mana += bonus
+        else:
+            print('Данный предмет не может быть экипирован')
+            return
+
+    def delete_item(self, item):
+        if item in self.items:
+            parametr = self.items[item]['parametr']
+            bonus = self.items[item]['bonus']
+            del self.items[item]
+
+            if parametr == "health":
+                self.health -= bonus
+            elif parametr == "mana":
+                self.mana -= bonus
+        else:
+            print('Предмет не экипирован')
+            return
 
 easter_end = datetime(2026, 4, 19, 23, 59, 59)
 Hero = easter_event(easter_end)(Hero)
