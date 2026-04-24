@@ -1,14 +1,11 @@
-import os
-from dotenv import load_dotenv
 import requests as r
 from pprint import pprint
+from config import GITHUB_API_KEY
 
-load_dotenv()
 
-GitHub_api = os.getenv('GITHUB_API_KEY')
 Base_URL = 'https://api.github.com'
 
-headers = {'Authorization': f'Bearer {GitHub_api}', 'Accept': 'application/vnd.github+json', 'X-Frame-Options': 'DENY'}
+headers = {'Authorization': f'Bearer {GITHUB_API_KEY}', 'Accept': 'application/vnd.github+json', 'X-Frame-Options': 'DENY'}
 # cookies = {'': 'has_recent_activity'}
 
 def get_user(username):
@@ -64,7 +61,7 @@ def get_inf_repos(username, repos):
     }
 
 
-def get_info(username):
+async def get_info(username):
     user = get_user(username)
     repos = get_repos(username)
     activ = get_all_activ(username)
