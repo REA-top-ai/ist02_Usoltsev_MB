@@ -12,7 +12,7 @@ PORT = os.getenv('POSTGRES_PORT')
 USERNAME = os.getenv('POSTGRES_USER')
 PASSWORD = os.getenv('POSTGRES_PASSWORD')
 
-DB_NAME = 'API_PROJECT'
+DB_NAME = 'api_project'
 
 DB_URL = f'postgresql+asyncpg://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}'
 SERVER_URL = f'postgresql+asyncpg://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/postgres'

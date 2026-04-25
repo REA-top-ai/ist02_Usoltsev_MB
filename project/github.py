@@ -34,7 +34,7 @@ def get_all_activ(username):
     all_activ = []
     for page in range(15):
         all_activ += get_activity(username, page)
-    return all_activ
+    return len(all_activ)
 
 def get_inf_repos(username, repos):
     sum_stars = 0

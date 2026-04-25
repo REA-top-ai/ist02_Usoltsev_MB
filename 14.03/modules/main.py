@@ -12,10 +12,10 @@ if __name__ == '__main__':
     headlines = get_top_headlines(api_key=API_KEY, q='apple')
     pprint(headlines)
 
-    print("\narticles 'bitcoin':")
+    print("Articles 'bitcoin':")
     everything = get_everything(api_key=API_KEY, q='bitcoin', page_size=3)
     pprint(everything)
 
-    print("\nNews sources:")
+    print("News sources:")
     sources = get_sources(api_key=API_KEY, category='business', language='en')
     pprint(sources)

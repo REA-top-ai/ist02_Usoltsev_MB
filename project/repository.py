@@ -3,8 +3,8 @@ from mistral import get_resume
 from schemas import UserCreate
 from database import new_sessions
 from models import GithubUser
-
 from datetime import datetime
+
 
 class Repository:
     @classmethod
@@ -31,6 +31,12 @@ class Repository:
 
             await session.commit()
             return {'info': info, 'resume': resume}
+
+
+
+
+
+
 
 
 
