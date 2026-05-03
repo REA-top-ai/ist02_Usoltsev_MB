@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Вход в приложение</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 100px; }
+        h1 { color: #333; }
+        .btn {
+            display: block;
+            width: 300px;
+            margin: 20px auto;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+        }
+        .google { background-color: #4285F4; }
+        .github { background-color: #24292e; }
+    </style>
+</head>
+<body>
+    <h1>Добро пожаловать!</h1>
+    <p>Войдите через один из сервисов:</p>
+
+    <a href="/auth/login/google" class="btn google">Войти через Google</a>
+    <a href="/auth/login/github" class="btn github">Войти через GitHub</a>
+</body>
+</html>

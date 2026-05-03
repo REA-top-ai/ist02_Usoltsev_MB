@@ -4,8 +4,8 @@ import os
 
 load_dotenv()
 
-CLIENT_ID = os.getenv("CLIENT_ID")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID_FOR_AUTH_APP")
+CLIENT_SECRET = os.getenv("GOOGLE_CLIENT_SECRET_FOR_AUTH_APP")
 
 flow = InstalledAppFlow.from_client_config({
     "installed": {

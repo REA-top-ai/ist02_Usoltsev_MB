@@ -1,0 +1,53 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>GitHub Информация</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 40px; }
+        input[type="text"] { padding: 10px; width: 300px; font-size: 16px; margin: 10px; }
+        button { padding: 10px 20px; font-size: 16px; }
+        #result { margin-top: 30px; text-align: left; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .history { margin-top: 40px; font-size: 14px; color: #555; }
+        .history-item { cursor: pointer; color: #0066cc; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>GitHub Profile Analyzer</h1>
+    <input type="text" id="username" placeholder="Введите имя пользователя на GitHub" />
+    <button onclick="fetchInfo()">Поиск</button>
+
+    <div id="result"></div>
+
+    <div class="history">
+        <h3>Последние 10 запросов</h3>
+        <ul id="history-list">
+            <!-- Примеры (позже будут из API) -->
+            <li class="history-item" onclick="useUsername('octocat')">octocat</li>
+            <li class="history-item" onclick="useUsername('torvalds')">torvalds</li>
+        </ul>
+    </div>
+
+    <script>
+        async function fetchInfo() {
+            const username = document.getElementById("username").value.trim();
+            if (!username) return alert("Введите имя пользователя");
+
+            const res = await fetch(`/user?username=${username}`);
+            const data = await res.json();
+
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `
+                <h2>Информация о ${username}</h2>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+        }
+
+        function useUsername(name) {
+            document.getElementById("username").value = name;
+            fetchInfo();
+        }
+    </script>
+</body>
+</html>

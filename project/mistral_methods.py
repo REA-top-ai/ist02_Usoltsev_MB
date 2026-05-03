@@ -25,8 +25,8 @@ async def get_resume(info: dict) -> str:
     """
 
     try:
-        with Mistral(api_key=MISTRAL_API_KEY) as mistral:
-            res = mistral.chat.complete(model=model, messages=[
+        async with Mistral(api_key=MISTRAL_API_KEY) as client:
+            res = await client.chat(model=model, messages=[
                 {
                     'content': promt,
                     'role': role
