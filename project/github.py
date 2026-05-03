@@ -54,7 +54,7 @@ async def get_inf_repos(username, repos):
                 languages[key] = repo_languages[key]
 
     return {
-        'languages': languages,
+        'languages': dict(sorted(languages.items(), key=lambda item: item[1], reverse=True)),
         'total_stars': sum_stars,
         'mean_count_stars': sum_stars//len(repos) if repos else 0,
         'total_forks': sum_forks,
@@ -70,8 +70,8 @@ async def get_info(username):
     info = {
         'username': user.get('login'),
         'created_at': user.get('created_at'),
-        'followers': user.get('followers'),
-        'all_repos': len(repos),
+        'followers': user.get('followers') or 0,
+        'all_repos': len(repos) if repos else 0,
         'activ': activ,
     }
     info.update(await get_inf_repos(username, repos))

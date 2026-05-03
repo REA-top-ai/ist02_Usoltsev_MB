@@ -25,16 +25,16 @@ async def get_resume(info: dict) -> str:
     """
 
     try:
-        async with Mistral(api_key=MISTRAL_API_KEY) as client:
-            res = await client.chat(model=model, messages=[
-                {
-                    'content': promt,
-                    'role': role
-                }
-            ], stream=False)
+        client = Mistral(api_key=MISTRAL_API_KEY)
+        res = await client.chat.complete_async(model=model, messages=[
+            {
+                'content': promt,
+                'role': role
+            }
+        ])
 
-            answer_text = res.choices[0].message.content
-            #print(answer_text)
-            return answer_text
+        answer_text = res.choices[0].message.content
+        #print(answer_text)
+        return answer_text
     except Exception as e:
         raise Exception(f'Ошибка при запросе к Mistral API: {e}')

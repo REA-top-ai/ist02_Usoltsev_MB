@@ -6,9 +6,12 @@ from fastapi.templating import Jinja2Templates
 from init_db import create_db_if_not_exist
 from models import create_tables
 from router import router
+from init_db import delete_db_if_exist
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    #await delete_db_if_exist()
     await create_db_if_not_exist()
     await create_tables()
     yield
