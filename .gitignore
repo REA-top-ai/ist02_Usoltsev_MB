@@ -1,3 +1,4 @@
 .env
 .venv/
 .pycasch__/
+build/
