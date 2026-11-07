@@ -1,146 +1,101 @@
 #include <fstream>
 #include <iostream>
+#include <cstdio>
 
 
-using namespace std;
-static constexpr int HEADERS_SIZE = 54;
-
-struct BitmapHeaders {
-    int bitmap_file_size;
-    int bitmap_reserved;
-    int bitmap_data_offset;
-    int bitmap_info_header_size;
-    int bitmap_width;
-    int bitmap_height;
+struct __attribute__((packed)) BitmapHeaders {
+    char  bitmap_signature[2];
+    int   bitmap_file_size;
+    int   bitmap_reserved;
+    int   bitmap_data_offset;
+    int   bitmap_info_header_size;
+    int   bitmap_width;
+    int   bitmap_height;
     short bitmap_planes;
     short bitmap_bits_per_pixel;
-    int bitmap_compression;
-    int bitmap_image_size;
-    int bitmap_XpixelsPerM;
-    int bitmap_YpixelsPerM;
-    int bitmap_ColorsUsed;
-    int bitmap_ColorsImportant;
+    int   bitmap_compression;
+    int   bitmap_image_size;
+    int   bitmap_XpixelsPerM;
+    int   bitmap_YpixelsPerM;
+    int   bitmap_ColorsUsed;
+    int   bitmap_ColorsImportant;
 };
 
-struct VPixel {
-    unsigned char b, g, r;
-};
-
-
-static int read_int(const unsigned char* bytes) {
-    return bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24);
-}
-
-static short read_short(const unsigned char* bytes) {
-    return static_cast<short>(bytes[0] | (bytes[1] << 8));
-}
-
-static bool check_signature(const unsigned char* sign) {
-    return sign[0] == 'B' && sign[1] == 'M';
-}
-
-static bool load_raw_file_data(const char* path, unsigned char* file_data, const int size, const int pos = 0) {
-    ifstream file(path, ios::binary);
-    if (!file) { return false; }
+static bool load_file_bytes(const char* path, unsigned char* headers,
+                            const int size, const int pos = 0) {
+    std::ifstream file(path, std::ios::binary);
+    if (!file) {
+        return false;
+    }
     file.seekg(pos);
-    file.read(reinterpret_cast<char*>(file_data), size);
-    return static_cast<int>(file.gcount()) == size;
+    file.read(reinterpret_cast<char*>(headers), size);
+    return static_cast<bool>(file);
 }
 
-static void map_header(unsigned char const* source, BitmapHeaders& dest) {
-    dest.bitmap_file_size = read_int(source + 2);
-    dest.bitmap_reserved = read_int(source + 6);
-    dest.bitmap_data_offset = read_int(source + 10);
-    dest.bitmap_info_header_size = read_int(source + 14);
-    dest.bitmap_width = read_int(source + 18);
-    dest.bitmap_height = read_int(source + 22);
-    dest.bitmap_planes = read_short(source + 26);
-    dest.bitmap_bits_per_pixel = read_short(source + 28);
-    dest.bitmap_compression = read_int(source + 30);
-    dest.bitmap_image_size = read_int(source + 34);
-    dest.bitmap_XpixelsPerM = read_int(source + 38);
-    dest.bitmap_YpixelsPerM = read_int(source + 42);
-    dest.bitmap_ColorsUsed = read_int(source + 46);
-    dest.bitmap_ColorsImportant = read_int(source + 50);
-}
-
-static void print_bitmap_headers(const BitmapHeaders& h) {
-    cout << "4b bitmap_file_size : " << h.bitmap_file_size << '\n'
-          << "4b bitmap_reserved : " << h.bitmap_reserved << '\n'
-          << "4b bitmap_data_offset : " << h.bitmap_data_offset << '\n'
-          << "4b bitmap_info_header_size : " << h.bitmap_info_header_size << '\n'
-          << "4b bitmap_width : " << h.bitmap_width << '\n'
-          << "4b bitmap_height : " << h.bitmap_height << '\n'
-          << "2b bitmap_planes : " << h.bitmap_planes << '\n'
-          << "2b bitmap_bits_per_pixel : " << h.bitmap_bits_per_pixel << '\n'
-          << "4b bitmap_compression : " << h.bitmap_compression << '\n'
-          << "4b bitmap_image_size : " << h.bitmap_image_size << '\n'
-          << "4b bitmap_XpixelsPerM : " << h.bitmap_XpixelsPerM << '\n'
-          << "4b bitmap_YpixelsPerM : " << h.bitmap_YpixelsPerM << '\n'
-          << "4b bitmap_ColorsUsed : " << h.bitmap_ColorsUsed << '\n'
-          << "4b bitmap_ColorsImportant : " << h.bitmap_ColorsImportant << '\n';
-}
-
-static bool load_headers(const char* path, BitmapHeaders& bitmap_headers) {
-    unsigned char bitmap_header_raw[HEADERS_SIZE]{};
-    if (!load_raw_file_data(path, bitmap_header_raw, HEADERS_SIZE)) {
-        cerr << "Can't open or read file: " << path << '\n';
-        return false;
-    }
-    if (!check_signature(bitmap_header_raw)) {
-        cerr << "Not a BMP file: " << path << '\n';
-        return false;
-    }
-    map_header(bitmap_header_raw, bitmap_headers);
-    print_bitmap_headers(bitmap_headers);
-    return true;
-}
-
-static void print_pixel(const char* corner, const VPixel& p) {
-    cout << corner << ": R:" << static_cast<int>(p.r)
-          << " G:" << static_cast<int>(p.g)
-          << " B:" << static_cast<int>(p.b) << '\n';
+static void print_headers(const BitmapHeaders& h) {
+    std::cout << "2b headers.bitmap_signature : " << h.bitmap_signature[0] << h.bitmap_signature[1] << std::endl;
+    std::cout << "4b headers.bitmap_file_size : " << h.bitmap_file_size << std::endl;
+    std::cout << "4b headers.bitmap_reserved : " << h.bitmap_reserved << std::endl;
+    std::cout << "4b headers.bitmap_data_offset : " << h.bitmap_data_offset << std::endl;
+    std::cout << "4b headers.bitmap_info_header_size : " << h.bitmap_info_header_size << std::endl;
+    std::cout << "4b headers.bitmap_width : " << h.bitmap_width << std::endl;
+    std::cout << "4b headers.bitmap_height : " << h.bitmap_height << std::endl;
+    std::cout << "2b headers.bitmap_planes : " << h.bitmap_planes << std::endl;
+    std::cout << "2b headers.bitmap_bits_per_pixel : " << h.bitmap_bits_per_pixel << std::endl;
+    std::cout << "4b headers.bitmap_compression : " << h.bitmap_compression << std::endl;
+    std::cout << "4b headers.bitmap_image_size : " << h.bitmap_image_size << std::endl;
+    std::cout << "4b headers.bitmap_XpixelsPerM : " << h.bitmap_XpixelsPerM << std::endl;
+    std::cout << "4b headers.bitmap_YpixelsPerM : " << h.bitmap_YpixelsPerM << std::endl;
+    std::cout << "4b headers.bitmap_ColorsUsed : " << h.bitmap_ColorsUsed << std::endl;
+    std::cout << "4b headers.bitmap_ColorsImportant : " << h.bitmap_ColorsImportant << std::endl;
 }
 
 int main(const int argc, char** argv) {
     const char* path = argc > 1 ? argv[1] : "image.bmp";
 
-    BitmapHeaders bitmap_headers{};
-    if (!load_headers(path, bitmap_headers)) return 1;
+    BitmapHeaders headers {};
 
-    if (bitmap_headers.bitmap_bits_per_pixel != 24 || bitmap_headers.bitmap_compression != 0) {
-        cerr << "Only uncompressed 24-bit BMP is supported\n";
+    // 54 байта файла читаем сразу в структуру
+    if (!load_file_bytes(path, reinterpret_cast<unsigned char*>(&headers), sizeof(headers))) {
+        printf("Failed to load file \n: %s", path);
+        return 1;
+    }
+    bool check_signature = (headers.bitmap_signature[0] == 'B' && headers.bitmap_signature[1] == 'M');
+    if (!check_signature) {
+        printf("Not a BMP file \n: %s", path);
         return 1;
     }
 
-    const int width = bitmap_headers.bitmap_width;
-    const bool top_down = bitmap_headers.bitmap_height < 0;
-    const int height = top_down ? -bitmap_headers.bitmap_height : bitmap_headers.bitmap_height;
-    if (width <= 0 || height <= 0) {
-        cerr << "Invalid image size\n";
+    print_headers(headers);
+
+    if (headers.bitmap_bits_per_pixel != 24 || headers.bitmap_compression != 0) {
+        printf("Only uncompressed 24-bit BMP is supported\n");
         return 1;
     }
 
-    const int row_size = (width * 3 + 3) / 4 * 4;
-    const int data_size = row_size * height;
+    const int w = headers.bitmap_width;
+    const int h = headers.bitmap_height;
 
-    const auto pixels_raw = new unsigned char[data_size];
-    if (!load_raw_file_data(path, pixels_raw, data_size, bitmap_headers.bitmap_data_offset)) {
-        cerr << "Can't read pixel data\n";
-        delete[] pixels_raw;
+    const int row_size = (w * 3 + 3) / 4 * 4;
+    const int data_size = row_size * h;
+
+    unsigned char* pixels = new unsigned char[data_size];
+    if (!load_file_bytes(path, pixels, data_size, headers.bitmap_data_offset)) {
+        printf("Failed to read pixel data\n");
+        delete[] pixels;
         return 1;
     }
 
-    auto get_pixel = [&](const int x, const int y) -> const VPixel& {
-        const int row = top_down ? y : height - 1 - y;
-        return *reinterpret_cast<const VPixel*>(pixels_raw + row * row_size + x * 3);
-    };
+    unsigned char* bottom_left  = pixels;
+    unsigned char* bottom_right = pixels + (w - 1) * 3;
+    unsigned char* upper_left   = pixels + (h - 1) * row_size;
+    unsigned char* upper_right  = pixels + (h - 1) * row_size + (w - 1) * 3;
 
-    print_pixel("upper-left", get_pixel(0, 0));
-    print_pixel("upper-right", get_pixel(width - 1, 0));
-    print_pixel("bottom-left", get_pixel(0, height - 1));
-    print_pixel("bottom-right", get_pixel(width - 1, height - 1));
+    printf("Top-left:     R: %d G: %d B: %d\n", upper_left[2], upper_left[1], upper_left[0]);
+    printf("Top-right:    R: %d G: %d B: %d\n", upper_right[2], upper_right[1], upper_right[0]);
+    printf("Bottom-left:  R: %d G: %d B: %d\n", bottom_left[2], bottom_left[1], bottom_left[0]);
+    printf("Bottom-right: R: %d G: %d B: %d\n", bottom_right[2], bottom_right[1], bottom_right[0]);
 
-    delete[] pixels_raw;
+    delete[] pixels;
     return 0;
 }
